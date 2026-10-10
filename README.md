@@ -26,6 +26,14 @@ Homebrew 以外の Qt を使う場合は `-DCMAKE_PREFIX_PATH=<Qt のインス�
 2. 送信元の IP アドレスを選ぶと、ブロードキャストアドレスが自動で入る (手動で書き換え可)。
 3. 「送信」を押すと UDP ポート 7 にマジックパケットを送る。未登録の名前は一覧に追加される。
 
+一覧の行を選んで「選択行を削除」(または Delete / Backspace キー) を押すと、確認のうえ一覧から削除する。
+
+## 配布物
+
+GitHub Actions (`.github/workflows/build.yml`) が push ごとに Windows 版 (x64) と macOS 版 (ユニバーサル) をビルドし、Artifacts に置く。
+
+## 保存先
+
 一覧は `名前,MACアドレス` 形式の `WOLSwitch.csv` に保存される。
 
 | OS | 保存先 |

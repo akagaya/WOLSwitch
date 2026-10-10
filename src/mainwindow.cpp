@@ -8,12 +8,16 @@
 #include <QFontDatabase>
 #include <QHostAddress>
 #include <QLabel>
+#include <QMessageBox>
 #include <QNetworkInterface>
+#include <QShortcut>
 #include <QStandardPaths>
 
 namespace {
 
 enum Column { NameColumn, MacColumn };
+
+const int MessageTimeoutMs = 5000;
 
 QString defaultListFile()
 {
@@ -57,8 +61,18 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onInterfaceChanged);
     connect(ui->hostTable, &QTableWidget::itemSelectionChanged,
             this, &MainWindow::onHostSelectionChanged);
+    connect(ui->deleteButton, &QPushButton::clicked,
+            this, &MainWindow::onDeleteClicked);
     connect(ui->sendButton, &QPushButton::clicked,
             this, &MainWindow::onSendClicked);
+
+    // セル編集中は編集欄がフォーカスを持つため、このショートカットは発火しない
+    for (const QKeySequence &key : {QKeySequence(QKeySequence::Delete),
+                                    QKeySequence(Qt::Key_Backspace)}) {
+        auto *deleteShortcut = new QShortcut(key, ui->hostTable);
+        deleteShortcut->setContext(Qt::WidgetShortcut);
+        connect(deleteShortcut, &QShortcut::activated, this, &MainWindow::onDeleteClicked);
+    }
 
     populateInterfaces();
     populateHostTable(hostlist::load(m_listFile));
@@ -131,6 +145,7 @@ void MainWindow::onInterfaceChanged(int index)
 void MainWindow::onHostSelectionChanged()
 {
     const int row = ui->hostTable->currentRow();
+    ui->deleteButton->setEnabled(row >= 0);
     if (row < 0)
         return;
 
@@ -138,14 +153,36 @@ void MainWindow::onHostSelectionChanged()
     ui->macEdit->setText(ui->hostTable->item(row, MacColumn)->text());
 }
 
+void MainWindow::onDeleteClicked()
+{
+    const int row = ui->hostTable->currentRow();
+    if (row < 0)
+        return;
+
+    const QString name = ui->hostTable->item(row, NameColumn)->text();
+    const auto answer = QMessageBox::question(
+        this, tr("削除の確認"), tr("「%1」を一覧から削除しますか？").arg(name));
+    if (answer != QMessageBox::Yes)
+        return;
+
+    ui->hostTable->removeRow(row);
+    const int remaining = ui->hostTable->rowCount();
+    if (remaining > 0)
+        ui->hostTable->selectRow(qMin(row, remaining - 1));
+    ui->deleteButton->setEnabled(ui->hostTable->currentRow() >= 0);
+
+    if (hostlist::save(m_listFile, hostsInTable()))
+        ui->statusBar->showMessage(tr("削除しました: %1").arg(name), MessageTimeoutMs);
+    else
+        ui->statusBar->showMessage(tr("一覧の保存に失敗しました"), MessageTimeoutMs);
+}
+
 void MainWindow::onSendClicked()
 {
-    const int messageTimeoutMs = 5000;
-
     const QString macText = ui->macEdit->text();
     const std::optional<QByteArray> mac = wol::parseMac(macText);
     if (!mac) {
-        ui->statusBar->showMessage(tr("MACアドレスが不正です"), messageTimeoutMs);
+        ui->statusBar->showMessage(tr("MACアドレスが不正です"), MessageTimeoutMs);
         return;
     }
 
@@ -157,18 +194,18 @@ void MainWindow::onSendClicked()
 
     const QHostAddress broadcast(ui->broadcastEdit->text().trimmed());
     if (broadcast.isNull()) {
-        ui->statusBar->showMessage(tr("ブロードキャストアドレスが不正です"), messageTimeoutMs);
+        ui->statusBar->showMessage(tr("ブロードキャストアドレスが不正です"), MessageTimeoutMs);
         return;
     }
 
     const QByteArray packet = wol::magicPacket(*mac);
     if (m_socket.writeDatagram(packet, broadcast, wol::Port) != packet.size()) {
         ui->statusBar->showMessage(tr("送信に失敗しました: %1").arg(m_socket.errorString()),
-                                   messageTimeoutMs);
+                                   MessageTimeoutMs);
         return;
     }
 
     ui->statusBar->showMessage(saved ? tr("送信しました: %1").arg(macText)
                                      : tr("送信しましたが、一覧の保存に失敗しました"),
-                               messageTimeoutMs);
+                               MessageTimeoutMs);
 }

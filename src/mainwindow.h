@@ -31,6 +31,7 @@ private:
 
     void onInterfaceChanged(int index);
     void onHostSelectionChanged();
+    void onDeleteClicked();
     void onSendClicked();
 
     std::unique_ptr<Ui::MainWindow> ui;
