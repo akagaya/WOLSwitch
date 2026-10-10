@@ -2,8 +2,15 @@ name: Build
 
 on:
   push:
-  pull_request:
   workflow_dispatch:
+
+# 古い実行が後から完了して新しい成果物を消さないよう、実行は常に 1 つにする
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 env:
   QT_VERSION: 6.8.3
@@ -69,3 +76,23 @@ jobs:
         with:
           name: WOLSwitch-macos-universal
           path: build/WOLSwitch.dmg
+
+  # 両方のビルドが成功した場合のみ、過去の実行の成果物を削除して最新の 1 セットだけ残す
+  cleanup:
+    needs: [windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Delete artifacts from older runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh api --paginate "repos/$REPO/actions/artifacts?per_page=100" \
+            --jq ".artifacts[] | select(.workflow_run.id != $RUN_ID) | .id" |
+          while read -r id; do
+            echo "Deleting artifact $id"
+            gh api -X DELETE "repos/$REPO/actions/artifacts/$id"
+          done
