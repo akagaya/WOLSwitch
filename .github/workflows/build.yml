@@ -13,7 +13,7 @@ permissions:
 
 env:
   # 変更する場合は THIRD-PARTY-NOTICES.md の記載も合わせること
-  QT_VERSION: 6.8.3
+  QT_VERSION: 6.11.2
 
 jobs:
   windows:
