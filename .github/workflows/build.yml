@@ -1,7 +1,6 @@
 name: Build
 
 on:
-  push:
   workflow_dispatch:
 
 # 古い実行が後から完了して新しい成果物を消さないよう、実行は常に 1 つにする

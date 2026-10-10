@@ -30,7 +30,7 @@ Homebrew 以外の Qt を使う場合は `-DCMAKE_PREFIX_PATH=<Qt のインス�
 
 ## 配布物
 
-GitHub Actions (`.github/workflows/build.yml`) が push ごとに Windows 版 (x64) と macOS 版 (ユニバーサル) をビルドし、Artifacts に置く。Artifacts は最新の 1 セットだけを残し、過去の実行分は自動で削除する。
+GitHub Actions (`.github/workflows/build.yml`) を手動実行すると、Windows 版 (x64) と macOS 版 (ユニバーサル) をビルドし、Artifacts に置く。Artifacts は最新の 1 セットだけを残し、過去の実行分は自動で削除する。
 
 ## 保存先
 
