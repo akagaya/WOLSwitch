@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Qt Creator のユーザー設定
+*.pro.user
+*.pro.user.*
+
+# ビルド成果物
+build/
+build-*/
+
+# 旧バージョン (v1.0) の配布物・Windows 用ランタイム
+*.exe
+*.dll
+/bearer/
+/iconengines/
+/imageformats/
+/platforms/
+/translations/
+/WOLSwitch_win32/
+/Release_v1.0/
+
+# 実行時データ (登録済み MAC アドレス一覧)
+/WOLSwitch.csv
