@@ -44,3 +44,5 @@ GitHub Actions (`.github/workflows/build.yml`) を手動実行すると、Window
 ## ライセンス
 
 MIT License。[LICENSE](LICENSE) を参照。
+
+配布物には LGPL-3.0 の Qt を同梱している。詳細は [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) を参照。

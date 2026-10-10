@@ -12,6 +12,7 @@ permissions:
   contents: read
 
 env:
+  # 変更する場合は THIRD-PARTY-NOTICES.md の記載も合わせること
   QT_VERSION: 6.8.3
 
 jobs:
@@ -39,7 +40,9 @@ jobs:
         run: |
           New-Item -ItemType Directory -Path dist/WOLSwitch | Out-Null
           Copy-Item build/Release/WOLSwitch.exe dist/WOLSwitch/
-          windeployqt --release --no-translations dist/WOLSwitch/WOLSwitch.exe
+          windeployqt --release --no-translations --no-opengl-sw --no-system-d3d-compiler dist/WOLSwitch/WOLSwitch.exe
+          Copy-Item LICENSE, THIRD-PARTY-NOTICES.md dist/WOLSwitch/
+          Copy-Item licenses dist/WOLSwitch/ -Recurse
 
       - uses: actions/upload-artifact@v4
         with:
@@ -69,7 +72,12 @@ jobs:
         run: ctest --test-dir build --output-on-failure
 
       - name: Package
-        run: macdeployqt build/WOLSwitch.app -dmg
+        run: |
+          macdeployqt build/WOLSwitch.app
+          mkdir dist
+          cp -R build/WOLSwitch.app dist/
+          cp -R LICENSE THIRD-PARTY-NOTICES.md licenses dist/
+          hdiutil create -volname WOLSwitch -srcfolder dist -ov -format UDZO build/WOLSwitch.dmg
 
       - uses: actions/upload-artifact@v4
         with:
