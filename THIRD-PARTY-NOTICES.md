@@ -5,7 +5,7 @@ WOLSwitch 本体は MIT License ([LICENSE](LICENSE)) で提供する。
 
 ## Qt
 
-- 名称: Qt 6.10.3 (Qt Core / Qt GUI / Qt Widgets / Qt Network と、それらのプラグイン)
+- 名称: Qt 6.10.3 (Qt Core / Qt GUI / Qt Widgets / Qt Network と、デプロイツールが同梱する Qt SVG / Qt D-Bus および各プラグイン)
 - 著作権: Copyright (C) The Qt Company Ltd. and other contributors.
 - ライセンス: GNU Lesser General Public License version 3 (LGPL-3.0)
   - 本文: [licenses/LGPL-3.0.txt](licenses/LGPL-3.0.txt)
@@ -22,8 +22,10 @@ WOLSwitch 本体のソースコードは https://github.com/akagaya/WOLSwitch �
 Qt 自体が含む第三者コンポーネントとそのライセンスは、Qt のドキュメントを参照。
 https://doc.qt.io/qt-6/licenses-used-in-qt.html
 
-## Microsoft Visual C++ Redistributable (Windows 版のみ)
+## ICU (Windows 版のみ)
 
-Windows 版には、実行に必要な Microsoft Visual C++ 再頒布可能パッケージのインストーラ
-(`vc_redist.x64.exe`) を同梱している。これは Microsoft Corporation の著作物であり、
-Microsoft のライセンス条項に基づいて再頒布している。
+Windows 版には `icuuc.dll` (International Components for Unicode) を同梱している。
+
+- 著作権: Copyright (C) Unicode, Inc.
+- ライセンス: Unicode License
+- 本文: https://www.unicode.org/license.txt

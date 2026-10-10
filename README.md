@@ -32,6 +32,8 @@ Homebrew 以外の Qt を使う場合は `-DCMAKE_PREFIX_PATH=<Qt のインス�
 
 GitHub Actions (`.github/workflows/build.yml`) を手動実行すると、Windows 版 (x64) と macOS 版 (ユニバーサル) をビルドし、Artifacts に置く。Artifacts は最新の 1 セットだけを残し、過去の実行分は自動で削除する。
 
+Windows 版の実行には [Microsoft Visual C++ 再頒布可能パッケージ (x64)](https://learn.microsoft.com/cpp/windows/latest-supported-vc-redist) が必要 (配布物には含まれない)。
+
 ## 保存先
 
 一覧は `名前,MACアドレス` 形式の `WOLSwitch.csv` に保存される。
