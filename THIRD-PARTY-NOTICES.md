@@ -11,7 +11,7 @@ WOLSwitch 本体は MIT License ([LICENSE](LICENSE)) で提供する。
   - 本文: [licenses/LGPL-3.0.txt](licenses/LGPL-3.0.txt)
   - LGPL-3.0 が参照する GNU General Public License version 3: [licenses/GPL-3.0.txt](licenses/GPL-3.0.txt)
 - 入手元: https://www.qt.io/
-- ソースコード: https://download.qt.io/official_releases/qt/6.8/6.8.3/
+- ソースコード: https://download.qt.io/archive/qt/6.8/6.8.3/
 
 WOLSwitch は Qt を改変せず、動的リンクで利用している。
 同梱の Qt ライブラリ (Windows 版の `Qt6*.dll` と各プラグイン、macOS 版の
