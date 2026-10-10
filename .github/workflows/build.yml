@@ -13,7 +13,8 @@ permissions:
 
 env:
   # 変更する場合は THIRD-PARTY-NOTICES.md の記載も合わせること
-  QT_VERSION: 6.11.2
+  # 6.11 以降は Windows 版の配布構造が変わり、aqtinstall 3.3.0 では取得できない
+  QT_VERSION: 6.10.3
 
 jobs:
   windows:
