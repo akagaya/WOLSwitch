@@ -40,3 +40,7 @@ GitHub Actions (`.github/workflows/build.yml`) を手動実行すると、Window
 | --- | --- |
 | macOS | `~/Documents/WOLSwitch.csv` |
 | それ以外 | 実行ファイルと同じフォルダ |
+
+## ライセンス
+
+MIT License。[LICENSE](LICENSE) を参照。
